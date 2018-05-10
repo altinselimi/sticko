@@ -1,40 +1,46 @@
 <template>
-	<ul>
+	<ul :class="{'hide': hide}" v-if="tasks && tasks.length > 0">
 		<li v-for="(task, index) in tasks" :class="{'finished': !!task.status}">
-			<checkbox :task-status.sync="task.status"></checkbox>
-			<span>{{task.label}} altin</span>
+			<checkbox @update="updateNote($event, task)" :task-value="task.status"></checkbox>
+			<span :class="{'no-style': task.dont_style}"><span>{{task.label ? task.label + ' - ' : null}}</span><span>{{task.description}}</span></span>
 		</li>
+		<li @click="hideforasec"><span style="margin: 0 auto; cursor:pointer;">HIDE FOR 5 SECONDS</span></li>
 	</ul>
 </template>
 <script>
-import storage from '../ext/storage.js';
 import checkbox from './checkbox.vue';
 
 export default {
 	components: {
 		checkbox,
 	},
+	data: () => ({ hide: false }),
 	computed: {
-		storeTasks() {
-			return storage.get('__sticko-tasks');
+		hello() {
+			return this.$store.state.hello;
+		},
+		tasks() {
+			return this.$store.getters.notesArr;
 		},
 	},
-	data: () => ({
-		tasks: [{
-			label: 'HV-583 - Fix transmission in the right gear of tractor',
-			status: false,
-		}, {
-			label: 'HV-69 - Go hard or go home',
-			status: false,
-		}, {
-			label: 'HV-96 - OK just go home.',
-			status: false,
-		}],
-	}),
+	methods: {
+		updateNote(status, note) {
+			this.$store.commit('SET_NOTE_STATUS', {id: note.id, status: status});
+		},
+		hideforasec() {
+			this.hide = true;
+			setTimeout(() => {
+				this.hide = false;
+			}, 5000)
+		},
+	},
 };
 </script>
 <style lang='scss' scoped>
 ul {
+	&.hide {
+		display: none;
+	}
 	opacity: .8;
 	max-width: 330px;
 	font-size: 14px;
@@ -62,6 +68,9 @@ ul {
 		>span {
 			margin-left: 10px;
 		}
+		>span:not(.no-style) > span:first-child{
+			text-transform: uppercase;
+		}
 		&.finished {
 			>span {
 				text-decoration: line-through;
@@ -69,6 +78,7 @@ ul {
 			}
 		}
 	}
+
 	&:hover {
 		opacity: 1;
 	}

@@ -1,1 +1,1 @@
-console.log('Content loaded sruccesfully');
+console.log('Index aint worth it');

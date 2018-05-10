@@ -1,8 +1,8 @@
 <template>
 	<div class="custom-check-wrapper">
-		<input type="checkbox" v-model="input_value" @change="statusEmit()" />
-		<div class="custom-icon" :class="{'checked': !!input_value}">
-			<check-icon v-if="input_value" />
+		<input type="checkbox" :value="taskValue" @change="statusEmit" />
+		<div class="custom-icon" :class="{'checked': !!taskValue}">
+			<check-icon v-if="taskValue" />
 			<circle-icon />
 		</div>
 	</div>
@@ -15,11 +15,10 @@ export default {
 		CircleIcon,
 		CheckIcon,
 	},
-	props: ['taskStatus'],
-	data: () => ({ input_value: false }),
+	props: ['taskValue'],
 	methods: {
 		statusEmit(event) {
-			this.$emit('update:taskStatus', this.input_value);
+			this.$emit('update', !this.taskValue);
 		},
 	}
 };

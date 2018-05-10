@@ -32,9 +32,9 @@ module.exports = {
   // options_page: 'pages/options.html',
   content_scripts: [{
     js: [ 'js/inject.js' ],
-    run_at: 'document_end',
+    run_at: 'document_start',
     matches: ['<all_urls>'],
-    all_frames: true
+    all_frames: false
   }],
   content_security_policy: "script-src 'self' 'unsafe-eval'; object-src 'self'",
   web_accessible_resources: [ 'panel.html', 'js/content.js' ]

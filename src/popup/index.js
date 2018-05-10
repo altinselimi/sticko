@@ -1,22 +1,20 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import root from './root.vue'
+import store from '../store';
+import {getSharedStore} from 'vuex-webextensions'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 
-Vue.config.productionTip = false
-Vue.use(ElementUI)
+Vue.use(ElementUI);
 
-const store = new Vuex.Store({
-	state: {
-		tasks: [],
-	},
-	mutations: {
-		
-	},
-})
+getSharedStore(store);
+
+Vue.config.productionTip = false
+
 /* eslint-disable no-new */
 new Vue({
-  el: '#root',
-  render: h => h(root)
-})
+	el: '#root',
+	store,
+	render: h => h(root)
+});
