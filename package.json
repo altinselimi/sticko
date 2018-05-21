@@ -1,8 +1,8 @@
 {
-  "name": "vue-chrome-extension-template",
+  "name": "sticko",
   "version": "0.0.1",
-  "description": "vue.js chrome extension template (wcer)",
-  "author": "works.yura@gmail.com",
+  "description": "sticky notes for the browser",
+  "author": "selimialtin@gmail.com",
   "license": "MIT",
   "private": false,
   "dependencies": {

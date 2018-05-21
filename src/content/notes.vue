@@ -3,16 +3,24 @@
 		<li v-for="(task, index) in tasks" :class="{'finished': !!task.status}">
 			<checkbox @update="updateNote($event, task)" :task-value="task.status"></checkbox>
 			<span :class="{'no-style': task.dont_style}"><span>{{task.label ? task.label + ' - ' : null}}</span><span>{{task.description}}</span></span>
+			<div class="remove" @click="removeNote(task)">
+				<remove></remove>
+			</div>
 		</li>
-		<li @click="hideforasec"><span style="margin: 0 auto; cursor:pointer;">HIDE FOR 5 SECONDS</span></li>
+		<div class="helpers">
+			<button @click="hideforasec">HIDE FOR 5 SECONDS</button>
+			<button @click="$store.commit('SET_NOTES', {})">CLEAR</button>
+		</div>
 	</ul>
 </template>
 <script>
 import checkbox from './checkbox.vue';
+import { XSquareIcon } from 'vue-feather-icons';
 
 export default {
 	components: {
 		checkbox,
+		remove: XSquareIcon,
 	},
 	data: () => ({ hide: false }),
 	computed: {
@@ -22,10 +30,17 @@ export default {
 		tasks() {
 			return this.$store.getters.notesArr;
 		},
+		counter() {
+			return this.$store.state.count;
+		},
 	},
 	methods: {
 		updateNote(status, note) {
-			this.$store.commit('SET_NOTE_STATUS', {id: note.id, status: status});
+			this.$store.commit('SET_NOTE_STATUS', { id: note.id, status: status });
+		},
+		removeNote(note) {
+			console.log('Note tbr:', note);
+			this.$store.commit('REMOVE_NOTE', note);
 		},
 		hideforasec() {
 			this.hide = true;
@@ -34,14 +49,51 @@ export default {
 			}, 5000)
 		},
 	},
+	watch: {
+		hello(newTasks) {
+			console.log('My name is hello and things have changed');
+		},
+	}
 };
 </script>
 <style lang='scss' scoped>
+.helpers {
+	visibility: hidden;
+	display: flex;
+	justify-content: space-between;
+	font-size: 13px;
+}
+
+button {
+	-webkit-appearance: none;
+	border: none;
+	padding: 1px 5px;
+	background-color: white;
+	color: lighten(black, 10);
+	text-decoration: underline;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+.remove {
+	visibility: hidden;
+	display: flex;
+	align-items: center;
+	margin-left: 5px;
+	margin-left: auto;
+	svg {
+		width: 15px;
+		height: 15px;
+		stroke-width: 1px;
+	}
+}
+
 ul {
 	&.hide {
 		display: none;
 	}
 	opacity: .8;
+	min-width: 250px;
 	max-width: 330px;
 	font-size: 14px;
 	position: fixed;
@@ -56,7 +108,17 @@ ul {
 	-moz-osx-font-smoothing: grayscale;
 	-moz-font-feature-settings: "liga" on;
 	box-sizing: border-box;
-	font-family: "Lato", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+	font-family: "Lato",
+	-apple-system,
+	BlinkMacSystemFont,
+	"Segoe UI",
+	Roboto,
+	Helvetica,
+	Arial,
+	sans-serif,
+	"Apple Color Emoji",
+	"Segoe UI Emoji",
+	"Segoe UI Symbol";
 	font-weight: 400;
 	li {
 		background-color: black;
@@ -68,7 +130,7 @@ ul {
 		>span {
 			margin-left: 10px;
 		}
-		>span:not(.no-style) > span:first-child{
+		>span:not(.no-style)>span:first-child {
 			text-transform: uppercase;
 		}
 		&.finished {
@@ -76,11 +138,17 @@ ul {
 				text-decoration: line-through;
 				color: rgba(white, .8);
 			}
+			&:hover .remove {
+				visibility: visible;
+			}
 		}
 	}
 
 	&:hover {
 		opacity: 1;
+		.helpers {
+			visibility: visible;
+		}
 	}
 }
 </style>

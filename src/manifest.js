@@ -28,11 +28,10 @@ module.exports = {
     persistent: false,
     page: 'pages/background.html'
   },
-  // devtools_page: 'pages/devtools.html',
   // options_page: 'pages/options.html',
   content_scripts: [{
     js: [ 'js/inject.js' ],
-    run_at: 'document_start',
+    run_at: 'document_idle', //or document_start
     matches: ['<all_urls>'],
     all_frames: false
   }],

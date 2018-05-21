@@ -27,7 +27,7 @@ module.exports = merge(baseWebpack, {
       filename: 'css/[name].[contenthash].css'
     }),
     new webpack.HashedModuleIdsPlugin(),
-    new webpack.optimize.CommonsChunkPlugin({
+/*    new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       minChunks: function (module) {
         return (
@@ -38,7 +38,7 @@ module.exports = merge(baseWebpack, {
           ) === 0
         )
       }
-    }),
+    }),*/
     new webpack.optimize.CommonsChunkPlugin({
       name: 'manifest',
       chunks: ['vendor']

@@ -1,8 +1,10 @@
-import {setSharedStore} from 'vuex-webextensions'
 import store from '../store';
+
+import { setSharedStore } from 'vuex-webextensions'
+
+let initiatedSharedStore;
 setSharedStore(store);
-/*browser.runtime.onMessage.addListener((message, sender) => {
-    if (message.type === 'storeinit') {
-        return Promise.resolve(store.state[message.key]);
-    }
-});*/
+
+setTimeout(() => {
+	setSharedStore(store);
+}, 4000);
