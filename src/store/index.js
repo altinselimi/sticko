@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex'
+import VuexWebExtensions from 'vuex-webextensions'
 
 Vue.use(Vuex);
 export default new Vuex.Store({
@@ -35,5 +36,7 @@ export default new Vuex.Store({
     },
     getters: {
         notesArr: state => Object.keys(state.notes).map(key => ({...state.notes[key], ['id']: key})),
+        focused_exists: state => Object.keys(state.notes).find(key => !!state.notes[key]['focused']),
     },
+    plugins: [VuexWebExtensions()],
 });

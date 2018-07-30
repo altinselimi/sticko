@@ -48,6 +48,7 @@ export default {
         description: this.details || 'No details',
         id: this.uuid(),
         dont_style: this.pre_editable,
+        focused: false,
       };
       let payloads = null;
 

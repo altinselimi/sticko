@@ -1,11 +1,17 @@
 <template>
 	<ul :class="{'hide': hide}" v-if="tasks && tasks.length > 0">
-		<li v-for="(task, index) in tasks" :class="{'finished': !!task.status}">
+		<li v-for="(task, index) in filteredTasks" :class="{'finished': !!task.status}">
 			<checkbox @update="updateNote($event, task)" :task-value="task.status"></checkbox>
-			<span :class="{'no-style': task.dont_style}"><span>{{task.label ? task.label + ' - ' : null}}</span><span>{{task.description}}</span></span>
-			<div class="remove" @click="removeNote(task)">
+			<span :class="{'no-style': task.dont_style}">
+				<span>{{task.label ? task.label + ' - ' : null}}</span>
+				<span>{{task.description}}</span>
+			</span>
+			<button class="plain-btn remove" @click="removeNote(task)">
 				<remove></remove>
-			</div>
+			</button>
+			<button class="plain-btn focus" :class="{'focused': task.focused}" @click="focusNote(task)" v-if="!task.status">
+				<focus></focus>
+			</button>
 		</li>
 		<div class="helpers">
 			<button @click="hideforasec">HIDE FOR 5 SECONDS</button>
@@ -15,17 +21,18 @@
 </template>
 <script>
 import checkbox from './checkbox.vue';
-import { XSquareIcon } from 'vue-feather-icons';
+import { XSquareIcon, CrosshairIcon } from 'vue-feather-icons';
 
 export default {
 	components: {
 		checkbox,
 		remove: XSquareIcon,
+		focus: CrosshairIcon,
 	},
-	data: () => ({ hide: false }),
+	data: () => ({ hide: false, show_all: false }),
 	computed: {
-		hello() {
-			return this.$store.state.hello;
+		focused_exists() {
+			return this.$store.getters.focused_exists;
 		},
 		tasks() {
 			return this.$store.getters.notesArr;
@@ -33,6 +40,10 @@ export default {
 		counter() {
 			return this.$store.state.count;
 		},
+		filteredTasks() {
+			if(!this.focused_exists || this.show_all) return this.tasks;
+			return [this.tasks.find(task => !!task.focused)];
+		}
 	},
 	methods: {
 		updateNote(status, note) {
@@ -41,6 +52,9 @@ export default {
 		removeNote(note) {
 			console.log('Note tbr:', note);
 			this.$store.commit('REMOVE_NOTE', note);
+		},
+		focusNote(note) {
+			this.$store.commit('TOGGLE_FOCUS_NOTE', note);
 		},
 		hideforasec() {
 			this.hide = true;
@@ -64,6 +78,21 @@ export default {
 	font-size: 13px;
 }
 
+.focus {
+	display: flex;
+	align-items: center;
+	svg {
+		width: 15px;
+		height: 15px;
+		stroke: rgba(white, .8);
+	}
+	&.focused {
+		svg {
+			stroke : #409EFF;
+		}
+	}
+}
+
 button {
 	-webkit-appearance: none;
 	border: none;
@@ -73,6 +102,16 @@ button {
 	text-decoration: underline;
 	font-weight: 600;
 	cursor: pointer;
+	&.plain-btn {
+		background-color: transparent;
+		padding: 0px;
+		text-decoration: none;
+
+	}
+	&:hover, &:focus, &:active {
+		transform: scale(1.03);
+		border: solid 1px rgba(white, .004);
+	}
 }
 
 .remove {

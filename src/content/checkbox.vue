@@ -1,10 +1,10 @@
 <template>
 	<div class="custom-check-wrapper">
 		<input type="checkbox" :value="taskValue" @change="statusEmit" />
-		<div class="custom-icon" :class="{'checked': !!taskValue}">
+		<button class="plain-btn custom-icon" :class="{'checked': !!taskValue}">
 			<check-icon v-if="taskValue" />
 			<circle-icon />
-		</div>
+		</button>
 	</div>
 </template>
 <script>
@@ -59,6 +59,27 @@ svg {
 		width: 100%;
 		height: 100%;
 		padding: 4px;
+	}
+}
+
+button {
+	-webkit-appearance: none;
+	border: none;
+	padding: 1px 5px;
+	background-color: white;
+	color: lighten(black, 10);
+	text-decoration: underline;
+	font-weight: 600;
+	cursor: pointer;
+	&.plain-btn {
+		background-color: transparent;
+		padding: 0px;
+		text-decoration: none;
+		color: inherit;
+	}
+	&:hover, &:focus, &:active {
+		transform: scale(1.03);
+		border: solid 1px rgba(white, .004);
 	}
 }
 </style>
