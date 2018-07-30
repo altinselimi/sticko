@@ -63,14 +63,12 @@ export default {
 			}, 5000)
 		},
 	},
-	watch: {
-		hello(newTasks) {
-			console.log('My name is hello and things have changed');
-		},
-	}
 };
 </script>
 <style lang='scss' scoped>
+svg {
+	cursor: pointer;
+}
 .helpers {
 	visibility: hidden;
 	display: flex;
@@ -95,6 +93,7 @@ export default {
 
 button {
 	-webkit-appearance: none;
+	outline: none;
 	border: none;
 	padding: 1px 5px;
 	background-color: white;

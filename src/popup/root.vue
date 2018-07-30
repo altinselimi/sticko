@@ -1,6 +1,6 @@
 <template>
   <div class="settings">
-    <el-input type="text" v-model="label" placeholder="Task name" v-if="!pre_editable && !split_rows" />
+    <el-input type="text" v-model="label" placeholder="Note name" v-if="!pre_editable && !split_rows" />
     <el-input type="textarea" :rows="2" :placeholder="pre_editable ? 'Text' : 'Details'" v-model="details">
     </el-input>
     <button type="button" @click="more_options = !more_options" class="more-options"><i :class="!more_options ? `el-icon-arrow-down` : `el-icon-arrow-up`"></i><span>More Options</span></button>
@@ -23,7 +23,7 @@
         <span class="info">Defaults to new line</span>
       </li>
     </ul>
-    <el-button class="add-button" type="primary" icon="el-icon-plus" @click="(label || details) && addTask()">ADD NEW TASK</el-button>
+    <el-button class="add-button" type="primary" icon="el-icon-plus" @click="(label || details) && addTask()">ADD STICKY NOTE</el-button>
   </div>
 </template>
 <script>
